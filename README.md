@@ -117,7 +117,40 @@ dotnet build XnaContentCompiler.slnx -c Release
 dotnet test tests\XnaContentCompiler.Core.Tests\XnaContentCompiler.Core.Tests.csproj
 ```
 
-Publish the self-contained single file executable:
+For everyday development, the build helper wraps the common commands:
+
+```powershell
+.\scripts\build.ps1                                    # Debug build of the solution
+.\scripts\build.ps1 -Configuration Release             # Release build
+.\scripts\build.ps1 -Test                              # build and run the unit tests
+.\scripts\build.ps1 -Clean                             # delete bin/obj/dist, then build
+.\scripts\build.ps1 -CleanOnly                         # only delete build output
+.\scripts\build.ps1 -Run                               # build and launch the UI
+.\scripts\build.ps1 -Run --build path\to\project.xnccproj   # build and run in CLI mode
+```
+
+The batch wrapper works the same way: `scripts\build.bat -Test`.
+
+To run the tests and publish the self-contained executable in one step:
+
+```powershell
+.\scripts\publish.ps1
+```
+
+Common options:
+
+- `-SkipTests` publishes without running the unit tests.
+- `-Output <folder>` changes the output folder (default `dist`).
+- `-Runtime <rid>` changes the target runtime (default `win-x64`).
+- `-Configuration Debug` publishes a debug build.
+
+On systems where PowerShell script execution is restricted, use the batch wrapper instead:
+
+```bat
+scripts\publish.bat
+```
+
+The equivalent raw command is:
 
 ```powershell
 dotnet publish src\XnaContentCompiler.App\XnaContentCompiler.App.csproj -c Release -r win-x64 `
@@ -132,6 +165,7 @@ dotnet publish src\XnaContentCompiler.App\XnaContentCompiler.App.csproj -c Relea
 ## Repository Layout
 
 ```text
+scripts/                        Command line build and publish helpers
 src/XnaContentCompiler.Core/    Project model, XNB writers and rewriters, WAV/MP3/WMA readers, build service
 src/XnaContentCompiler.App/     WinForms UI, localization tables, CLI entry point, icon and manifest
 tests/                          xUnit tests for the core build logic

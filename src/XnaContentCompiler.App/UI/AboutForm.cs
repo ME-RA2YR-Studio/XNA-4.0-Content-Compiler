@@ -91,9 +91,14 @@ public sealed class AboutForm : Form
             Margin = new Padding(0, 0, 0, 6),
         };
 
+        var productVersion = Application.ProductVersion;
+        var revisionSeparator = productVersion.IndexOf('+');
+        if (revisionSeparator >= 0)
+            productVersion = productVersion[..revisionSeparator];
+
         var version = new Label
         {
-            Text = loc.Format("app.versionLabel", Application.ProductVersion),
+            Text = loc.Format("app.versionLabel", productVersion),
             AutoSize = true,
             ForeColor = Color.FromArgb(107, 114, 128),
             Margin = new Padding(0, 0, 0, 14),

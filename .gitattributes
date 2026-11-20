@@ -6,6 +6,8 @@
 *.props      text eol=crlf
 *.slnx       text eol=crlf
 *.manifest   text eol=crlf
+*.ps1        text eol=crlf
+*.bat        text eol=crlf
 *.json       text eol=crlf
 *.md         text eol=crlf
 LICENSE      text eol=crlf

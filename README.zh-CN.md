@@ -117,7 +117,40 @@ dotnet build XnaContentCompiler.slnx -c Release
 dotnet test tests\XnaContentCompiler.Core.Tests\XnaContentCompiler.Core.Tests.csproj
 ```
 
-发布自包含单文件程序：
+日常开发可直接使用构建脚本：
+
+```powershell
+.\scripts\build.ps1                                    # Debug 普通构建
+.\scripts\build.ps1 -Configuration Release             # Release 构建
+.\scripts\build.ps1 -Test                              # 构建并运行单元测试
+.\scripts\build.ps1 -Clean                             # 清理 bin/obj/dist 后再构建
+.\scripts\build.ps1 -CleanOnly                         # 仅清理构建产物
+.\scripts\build.ps1 -Run                               # 构建并启动界面
+.\scripts\build.ps1 -Run --build path\to\project.xnccproj   # 构建并以命令行模式运行
+```
+
+批处理包装用法相同：`scripts\build.bat -Test`。
+
+一步完成测试与单文件发布：
+
+```powershell
+.\scripts\publish.ps1
+```
+
+常用参数：
+
+- `-SkipTests` 跳过单元测试，直接发布。
+- `-Output <文件夹>` 修改输出目录（默认 `dist`）。
+- `-Runtime <rid>` 修改目标运行时（默认 `win-x64`）。
+- `-Configuration Debug` 发布 Debug 版本。
+
+如果系统限制运行 PowerShell 脚本，可使用批处理包装：
+
+```bat
+scripts\publish.bat
+```
+
+等价的原始命令：
 
 ```powershell
 dotnet publish src\XnaContentCompiler.App\XnaContentCompiler.App.csproj -c Release -r win-x64 `
@@ -132,6 +165,7 @@ dotnet publish src\XnaContentCompiler.App\XnaContentCompiler.App.csproj -c Relea
 ## 仓库结构
 
 ```text
+scripts/                        命令行构建与发布脚本
 src/XnaContentCompiler.Core/    项目模型、XNB 写入与重写、WAV/MP3/WMA 读取、构建服务
 src/XnaContentCompiler.App/     WinForms 界面、语言表、命令行入口、图标与清单
 tests/                          针对核心构建逻辑的 xUnit 测试
